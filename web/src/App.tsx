@@ -65,6 +65,7 @@ const REVIEWS = [
 ] as const;
 
 const clampProgress = (value: number) => Math.min(Math.max(value, 0), 1);
+const HERO_INTRO_SCROLL_TRIGGER_DELTA = 4;
 const isDemoRecordingSession = () => {
   if (typeof window === 'undefined') return false;
   return new URLSearchParams(window.location.search).get('demo') === 'recording';
@@ -759,11 +760,13 @@ function App() {
   const { width, height, isTouchDevice, isPhoneViewport, isCompactViewport, showDesktopNav, reducedMotionMode } = useViewportState();
   const shouldUseHeroVideo = true;
   const shouldSkipHeroCapture = isDemoRecording && demoRecordingTake !== '' && demoRecordingTake !== 'hero';
-  const shouldUseHeroFusionMask = shouldUseHeroVideo && !isPhoneViewport && !isCompactViewport && (!isDemoRecording || demoRecordingTake === 'hero');
+  const shouldUseHeroFusionMask = shouldUseHeroVideo && (!isDemoRecording || demoRecordingTake === 'hero');
+  const shouldUseHeroFusionMaskLowPower = reducedMotionMode || isTouchDevice || isPhoneViewport || isCompactViewport;
   const shouldUseHeroParallax = !reducedMotionMode && !isTouchDevice;
   const heroVideoPlaybackRate = isDemoRecording ? 1.45 : 1;
   const heroTaglineDelay = 6 / heroVideoPlaybackRate;
   const heroDotDelay = 7.56 / heroVideoPlaybackRate;
+  const shouldTrackHeroPlayback = isDemoRecording && shouldUseHeroVideo && !shouldUseHeroFusionMask;
   const [videoDuration, setVideoDuration] = useState<number | null>(null);
   const [heroPlaybackTime, setHeroPlaybackTime] = useState(0);
   const [heroIntroStarted, setHeroIntroStarted] = useState(() => !shouldUseHeroVideo);
@@ -810,6 +813,8 @@ function App() {
     };
 
     const commitPlaybackTime = (force = false) => {
+      if (!shouldTrackHeroPlayback) return;
+
       const nextTime = video.ended ? (video.duration || video.currentTime || 0) : (video.currentTime || 0);
       setHeroPlaybackTime((current) => {
         if (!force && Math.abs(current - nextTime) < 1 / 90) {
@@ -830,6 +835,8 @@ function App() {
     };
 
     const queuePlaybackFrame = () => {
+      if (!shouldTrackHeroPlayback) return;
+
       commitPlaybackTime(true);
 
       if (!playbackFrame && !video.paused && !video.ended) {
@@ -858,12 +865,16 @@ function App() {
 
     const handleEnded = () => {
       clearPlaybackFrame();
-      commitPlaybackTime(true);
+      if (shouldTrackHeroPlayback) {
+        commitPlaybackTime(true);
+      }
       setHeroIntroCompleted(true);
     };
 
     const syncPlaybackTime = () => {
-      commitPlaybackTime(true);
+      if (shouldTrackHeroPlayback) {
+        commitPlaybackTime(true);
+      }
     };
 
     const startPlayback = () => {
@@ -899,35 +910,43 @@ function App() {
     video.addEventListener('loadedmetadata', syncMetadata);
     video.addEventListener('loadeddata', startPlayback);
     video.addEventListener('canplay', startPlayback);
-    video.addEventListener('play', queuePlaybackFrame);
-    video.addEventListener('pause', syncPlaybackTime);
-    video.addEventListener('seeking', syncPlaybackTime);
-    video.addEventListener('seeked', syncPlaybackTime);
-    video.addEventListener('timeupdate', syncPlaybackTime);
     video.addEventListener('ended', handleEnded);
+
+    if (shouldTrackHeroPlayback) {
+      video.addEventListener('play', queuePlaybackFrame);
+      video.addEventListener('pause', syncPlaybackTime);
+      video.addEventListener('seeking', syncPlaybackTime);
+      video.addEventListener('seeked', syncPlaybackTime);
+      video.addEventListener('timeupdate', syncPlaybackTime);
+    }
 
     return () => {
       clearPlaybackFrame();
       video.removeEventListener('loadedmetadata', syncMetadata);
       video.removeEventListener('loadeddata', startPlayback);
       video.removeEventListener('canplay', startPlayback);
-      video.removeEventListener('play', queuePlaybackFrame);
-      video.removeEventListener('pause', syncPlaybackTime);
-      video.removeEventListener('seeking', syncPlaybackTime);
-      video.removeEventListener('seeked', syncPlaybackTime);
-      video.removeEventListener('timeupdate', syncPlaybackTime);
       video.removeEventListener('ended', handleEnded);
+
+      if (shouldTrackHeroPlayback) {
+        video.removeEventListener('play', queuePlaybackFrame);
+        video.removeEventListener('pause', syncPlaybackTime);
+        video.removeEventListener('seeking', syncPlaybackTime);
+        video.removeEventListener('seeked', syncPlaybackTime);
+        video.removeEventListener('timeupdate', syncPlaybackTime);
+      }
     };
-  }, [heroIntroCompleted, heroIntroStarted, heroVideoPlaybackRate, shouldSkipHeroCapture, shouldUseHeroVideo]);
+  }, [heroIntroCompleted, heroIntroStarted, heroVideoPlaybackRate, shouldSkipHeroCapture, shouldTrackHeroPlayback, shouldUseHeroVideo]);
 
   useEffect(() => {
     if (!isHeroScrollLocked) return;
 
     const htmlOverflow = document.documentElement.style.overflow;
     const bodyOverflow = document.body.style.overflow;
+    const previousScrollRestoration = 'scrollRestoration' in window.history ? window.history.scrollRestoration : null;
     let touchStartY = 0;
 
     const startHeroIntro = () => {
+      if (heroIntroStarted) return;
       setHeroIntroStarted(true);
     };
 
@@ -938,7 +957,7 @@ function App() {
     };
 
     const handleWheel = (event: WheelEvent) => {
-      if (event.deltaY > 0 && !heroIntroStarted) {
+      if (event.deltaY > HERO_INTRO_SCROLL_TRIGGER_DELTA && !heroIntroStarted) {
         startHeroIntro();
       }
 
@@ -961,43 +980,26 @@ function App() {
       keepAtTop();
     };
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (['ArrowDown', 'PageDown', ' ', 'Spacebar', 'End'].includes(event.key)) {
-        if (!heroIntroStarted) {
-          startHeroIntro();
-        }
-
-        event.preventDefault();
-        keepAtTop();
-      }
-    };
-
-    const handleScroll = () => {
-      if (window.scrollY > 0 && !heroIntroStarted) {
-        startHeroIntro();
-      }
-
-      keepAtTop();
-    };
-
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
+    if (previousScrollRestoration !== null) {
+      window.history.scrollRestoration = 'manual';
+    }
     keepAtTop();
 
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       document.documentElement.style.overflow = htmlOverflow;
       document.body.style.overflow = bodyOverflow;
+      if (previousScrollRestoration !== null) {
+        window.history.scrollRestoration = previousScrollRestoration;
+      }
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('scroll', handleScroll);
     };
   }, [heroIntroStarted, isHeroScrollLocked]);
 
@@ -1065,8 +1067,10 @@ function App() {
               poster={heroPoster}
               onLoadedMetadata={(event) => {
                 setVideoDuration(event.currentTarget.duration);
-                event.currentTarget.currentTime = 0;
-                event.currentTarget.pause();
+                if (!heroIntroStarted) {
+                  event.currentTarget.currentTime = 0;
+                  event.currentTarget.pause();
+                }
               }}
               className="absolute inset-0 h-full w-full object-cover opacity-90"
               style={{ transform: 'translateZ(0)', backfaceVisibility: 'hidden', willChange: 'transform, opacity' }}
@@ -1083,6 +1087,7 @@ function App() {
             viewportHeight={height}
             isPhoneViewport={isPhoneViewport}
             isCompactViewport={isCompactViewport}
+            lowPowerMode={shouldUseHeroFusionMaskLowPower}
             reducedMotion={reducedMotionMode}
           />
         )}
