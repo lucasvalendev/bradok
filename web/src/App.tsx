@@ -100,7 +100,8 @@ const getViewportState = () => {
 
   const width = window.innerWidth;
   const height = window.innerHeight;
-  const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
+  // Avoid classifying touchscreen laptops as touch-first devices.
+  const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
   const isLandscape = width > height;
   const isPhoneViewport = width < 640;
   const isCompactViewport = isTouchDevice && isLandscape && height <= 540;
