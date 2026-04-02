@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bradok-yellow: #FFCC00;
+  --color-bradok-yellow-hover: #E6B800;
+  --color-bradok-dark: #050505;
+  --color-bradok-surface: #ffffff;
+  --color-bradok-border: #e5e5e5;
+
+  --font-heading: "Montserrat", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
+    overflow-x: hidden;
+    overflow-x: clip;
+    scrollbar-width: none;
+  }
+
+  #root {
+    overflow-x: hidden;
+    overflow-x: clip;
+  }
+
+  body {
+    @apply bg-[#FAFAFA] text-neutral-900 font-body selection:bg-bradok-yellow selection:text-black;
+    min-width: 320px;
+    overflow-x: hidden;
+    overflow-x: clip;
+    scrollbar-width: none;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tight;
+  }
+
+  :where(section[id]) {
+    scroll-margin-top: 7rem;
+  }
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  html {
+    scroll-padding-top: 6.25rem;
+  }
+
+  :where(section[id]) {
+    scroll-margin-top: 6.25rem;
+  }
+}
+
+@media (orientation: landscape) and (pointer: coarse) and (max-height: 540px) {
+  html {
+    scroll-padding-top: 5.5rem;
+  }
+
+  :where(section[id]) {
+    scroll-margin-top: 5.5rem;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Hero fade-to-black: stays invisible for 90% of video, then fades in over the last 10% */
+@keyframes heroFadeToBlack {
+  0%,
+  88% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

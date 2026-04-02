@@ -1,0 +1,190 @@
+{
+  "name": "Bradok Smooth Functional Tour",
+  "description": "Versao de captura focada em scroll real, hero suave e demonstracao funcional da landing.",
+  "entry": {
+    "url": "/?demo=recording",
+    "selector": null,
+    "waitTime": 900,
+    "staticStart": true
+  },
+  "interactions": [
+    {
+      "type": "wheel",
+      "deltaY": 760,
+      "steps": 4,
+      "stepDelay": 95,
+      "moveCursor": false,
+      "waitAfter": 250,
+      "description": "Disparar a intro da hero com scroll real do mouse"
+    },
+    {
+      "type": "wait",
+      "waitTime": 6350,
+      "description": "Esperar a hero de gravacao terminar"
+    },
+    {
+      "type": "wheel",
+      "deltaY": 320,
+      "steps": 4,
+      "stepDelay": 70,
+      "moveCursor": false,
+      "waitAfter": 180,
+      "description": "Destravar o scroll apos a intro"
+    },
+    {
+      "type": "wheel",
+      "deltaY": 1600,
+      "steps": 16,
+      "stepDelay": 52,
+      "moveCursor": false,
+      "waitAfter": 320,
+      "description": "Entrar na hero branca e no inicio da estrutura"
+    },
+    {
+      "type": "wheel",
+      "deltaY": 1550,
+      "steps": 15,
+      "stepDelay": 52,
+      "moveCursor": false,
+      "waitAfter": 360,
+      "description": "Percorrer a primeira metade do scroll horizontal"
+    },
+    {
+      "type": "wheel",
+      "deltaY": 1650,
+      "steps": 16,
+      "stepDelay": 52,
+      "moveCursor": false,
+      "waitAfter": 700,
+      "description": "Concluir a estrutura e chegar aos reels"
+    },
+    {
+      "type": "hover",
+      "selector": "[data-testid='reel-card-2']",
+      "waitBeforeMove": 280,
+      "waitAfter": 2200,
+      "description": "Mostrar o preview do reel Nosso Espaco"
+    },
+    {
+      "type": "hover",
+      "selector": "[data-testid='reel-card-4']",
+      "waitBeforeMove": 260,
+      "waitAfter": 1800,
+      "description": "Mostrar o preview de outro reel"
+    },
+    {
+      "type": "wheel",
+      "deltaY": 1100,
+      "steps": 11,
+      "stepDelay": 50,
+      "moveCursor": false,
+      "waitAfter": 600,
+      "description": "Descer suavemente ate unidades"
+    },
+    {
+      "type": "click",
+      "selector": "#unit-tab-setville",
+      "waitBeforeMove": 260,
+      "waitAfter": 1100,
+      "zoomLevel": 1.22,
+      "description": "Trocar para a unidade Setville"
+    },
+    {
+      "type": "hover",
+      "selector": "[data-testid='unit-preview-setville']",
+      "waitBeforeMove": 260,
+      "waitAfter": 2200,
+      "description": "Ativar o preview em hover da Setville"
+    },
+    {
+      "type": "wheel",
+      "deltaY": 1250,
+      "steps": 13,
+      "stepDelay": 50,
+      "moveCursor": false,
+      "waitAfter": 600,
+      "description": "Descer ate a equipe"
+    },
+    {
+      "type": "hover",
+      "selector": "[data-testid='team-dna-card']",
+      "waitBeforeMove": 260,
+      "waitAfter": 1500,
+      "description": "Mostrar o hover do card principal da equipe"
+    },
+    {
+      "type": "hover",
+      "selector": "[data-testid='team-drone-card']",
+      "waitBeforeMove": 260,
+      "waitAfter": 1600,
+      "description": "Passar pelo card com video da equipe"
+    },
+    {
+      "type": "wheel",
+      "deltaY": 1950,
+      "steps": 18,
+      "stepDelay": 50,
+      "moveCursor": false,
+      "waitAfter": 650,
+      "description": "Descer ate depoimentos"
+    },
+    {
+      "type": "wait",
+      "waitTime": 1800,
+      "description": "Dar tempo para o mural animado aparecer em movimento"
+    },
+    {
+      "type": "wheel",
+      "deltaY": 1000,
+      "steps": 10,
+      "stepDelay": 50,
+      "moveCursor": false,
+      "waitAfter": 500,
+      "description": "Chegar na chamada para acao"
+    },
+    {
+      "type": "wheel",
+      "deltaY": 1250,
+      "steps": 12,
+      "stepDelay": 50,
+      "moveCursor": false,
+      "waitAfter": 500,
+      "description": "Chegar nas duvidas frequentes"
+    },
+    {
+      "type": "click",
+      "selector": "[data-testid='faq-item-3']",
+      "waitBeforeMove": 240,
+      "waitAfter": 1300,
+      "zoomLevel": 1.16,
+      "description": "Abrir a FAQ sobre Wellhub e TotalPass"
+    },
+    {
+      "type": "wheel",
+      "deltaY": 900,
+      "steps": 9,
+      "stepDelay": 50,
+      "moveCursor": false,
+      "waitAfter": 900,
+      "description": "Fechar no rodape"
+    }
+  ],
+  "effects": {
+    "cameraFollow": false,
+    "zoomLevel": 1.0,
+    "clickAnimations": true,
+    "mouseMoveSpeed": 48,
+    "attentionPattern": false
+  },
+  "recording": {
+    "duration": 70000,
+    "skipErrors": false,
+    "outputName": "bradok-smooth-functional-tour"
+  },
+  "timings": {
+    "waitBeforeMove": 260,
+    "waitAfterClick": 900,
+    "waitBetweenSteps": 280,
+    "pageLoadWait": 1100
+  }
+}

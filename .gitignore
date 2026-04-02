@@ -1,0 +1,9 @@
+node_modules/
+web/node_modules/
+web/dist/
+output/
+demo-output-cinematic/
+.agent/
+.playwright-mcp/
+*.log
+*.tsbuildinfo

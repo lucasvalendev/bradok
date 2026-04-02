@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System - Academia Bradok</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Branding colors */
+            --color-bg-base: #050505;
+            --color-bg-surface: #121212;
+            --color-bg-surface-hover: #1e1e1e;
+            
+            --color-text-main: #f3f4f6;
+            --color-text-muted: #9ca3af;
+            
+            --color-accent: #FFCC00; /* Bradok Yellow */
+            --color-accent-hover: #e6b800;
+            --color-accent-muted: rgba(255, 204, 0, 0.1);
+            
+            --color-border: #262626;
+            
+            /* Status Colors */
+            --color-success: #10B981;
+            --color-error: #EF4444;
+            --color-info: #3B82F6;
+
+            /* Typography */
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Inter', sans-serif;
+
+            /* Spacing */
+            --space-2: 8px;
+            --space-4: 16px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --space-12: 48px;
+
+            /* Shadows & Radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --shadow-accent: 0 4px 14px 0 rgba(255, 204, 0, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-bg-base);
+            color: var(--color-text-main);
+            line-height: 1.6;
+        }
+
+        header {
+            padding: var(--space-12) var(--space-8);
+            border-bottom: 1px solid var(--color-border);
+            background-color: var(--color-bg-surface);
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            color: var(--color-text-main);
+        }
+        
+        header h1 span {
+            color: var(--color-accent);
+        }
+
+        header p {
+            color: var(--color-text-muted);
+            font-size: 1.125rem;
+            margin-top: var(--space-2);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-12) var(--space-8);
+            display: grid;
+            gap: var(--space-12);
+        }
+
+        section {
+            background-color: var(--color-bg-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-8);
+        }
+
+        h2 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin-bottom: var(--space-8);
+            text-transform: uppercase;
+            color: var(--color-text-main);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 24px;
+            background-color: var(--color-accent);
+            border-radius: 2px;
+        }
+
+        /* Color Grid */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-6);
+        }
+
+        .color-card {
+            background: var(--color-bg-base);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .color-swatch {
+            height: 120px;
+            width: 100%;
+        }
+
+        .color-info {
+            padding: var(--space-4);
+        }
+
+        .color-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+        }
+        
+        .color-var {
+            font-size: 0.75rem;
+            color: var(--color-text-main);
+            margin-top: 4px;
+            font-family: monospace;
+        }
+
+        /* Typography */
+        .type-preview {
+            display: grid;
+            gap: var(--space-6);
+        }
+
+        .type-row {
+            padding: var(--space-4);
+            background: var(--color-bg-base);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+        }
+
+        .type-row.heading {
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+        }
+
+        .type-label {
+            font-size: 0.75rem;
+            color: var(--color-accent);
+            margin-bottom: 8px;
+            font-family: monospace;
+            text-transform: uppercase;
+        }
+
+        /* Components */
+        .comp-grid {
+            display: flex;
+            gap: var(--space-6);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            font-family: var(--font-heading);
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent);
+            color: #000;
+            box-shadow: var(--shadow-accent);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--color-accent);
+            border: 2px solid var(--color-accent);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-accent-muted);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            background: var(--color-accent-muted);
+            color: var(--color-accent);
+            border: 1px solid var(--color-accent);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Academia <span>Bradok</span></h1>
+        <p>Design System & Identidade Visual</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>01 — Cores</h2>
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--color-bg-base)"></div>
+                    <div class="color-info">
+                        <div class="color-name">Background Base</div>
+                        <div class="color-var">--color-bg-base (#050505)</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--color-bg-surface)"></div>
+                    <div class="color-info">
+                        <div class="color-name">Surface</div>
+                        <div class="color-var">--color-bg-surface (#121212)</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--color-accent)"></div>
+                    <div class="color-info">
+                        <div class="color-name" style="color:#000;">Accent Primary</div>
+                        <div class="color-var" style="color:#000;">--color-accent (#FFCC00)</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--color-border)"></div>
+                    <div class="color-info">
+                        <div class="color-name">Border</div>
+                        <div class="color-var">--color-border (#262626)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>02 — Tipografia</h2>
+            <div class="type-preview">
+                <div class="type-row heading">
+                    <div class="type-label">H1 - Montserrat Bold - 3rem</div>
+                    <div style="font-size: 3rem; line-height: 1.2;">Sua desculpa termina aqui</div>
+                </div>
+                <div class="type-row heading">
+                    <div class="type-label">H2 - Montserrat Bold - 2rem</div>
+                    <div style="font-size: 2rem; line-height: 1.2;">Planos Acessíveis</div>
+                </div>
+                <div class="type-row">
+                    <div class="type-label">Body - Inter Regular - 1rem</div>
+                    <div style="font-size: 1rem;">Construindo resultados todos os dias na Unidade Galo Branco e Setville. Experimente nosso novo ambiente.</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>03 — Componentes</h2>
+            <div class="comp-grid">
+                <button class="btn btn-primary">Comece Agora</button>
+                <button class="btn btn-outline">Ver Planos</button>
+                <div class="badge">Unidade Galo Branco</div>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>

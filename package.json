@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "web:dev": "npm --prefix web run dev -- --host 127.0.0.1",
+    "demo:help": "demo-video --help",
+    "demo:init": "cd web && demo-video --init",
+    "demo:record": "cd web && demo-video . http://127.0.0.1:5173",
+    "tour:record": "node scripts/bradok-tour.mjs"
+  },
+  "dependencies": {
+    "demo-video-maker": "^1.1.1"
+  },
+  "devDependencies": {
+    "patch-package": "^8.0.1"
+  }
+}

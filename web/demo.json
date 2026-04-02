@@ -1,0 +1,84 @@
+{
+  "name": "Bradok Official Baseline",
+  "description": "Configuração compatível com a documentação oficial do demo-video-maker, sem extensões locais.",
+  "entry": {
+    "url": "/",
+    "waitTime": 2000
+  },
+  "interactions": [
+    {
+      "type": "wait",
+      "waitTime": 3000,
+      "description": "Aguardar o carregamento inicial da hero"
+    },
+    {
+      "type": "scroll",
+      "selector": "#estrutura",
+      "waitBeforeMove": 700,
+      "waitAfter": 1200,
+      "description": "Ir para a seção de estrutura"
+    },
+    {
+      "type": "hover",
+      "selector": "[data-testid='reel-card-2']",
+      "waitBeforeMove": 700,
+      "waitAfter": 1600,
+      "description": "Mostrar o reel Nosso Espaço"
+    },
+    {
+      "type": "scroll",
+      "selector": "#unidades",
+      "waitBeforeMove": 700,
+      "waitAfter": 1200,
+      "description": "Ir para unidades"
+    },
+    {
+      "type": "click",
+      "selector": "#unit-tab-setville",
+      "waitBeforeMove": 700,
+      "waitAfter": 1200,
+      "zoomLevel": 1.2,
+      "description": "Trocar para a unidade Setville"
+    },
+    {
+      "type": "scroll",
+      "selector": "#equipe",
+      "waitBeforeMove": 700,
+      "waitAfter": 1200,
+      "description": "Ir para equipe"
+    },
+    {
+      "type": "scroll",
+      "selector": "#duvidas",
+      "waitBeforeMove": 700,
+      "waitAfter": 1200,
+      "description": "Ir para dúvidas frequentes"
+    },
+    {
+      "type": "click",
+      "selector": "[data-testid='faq-item-3']",
+      "waitBeforeMove": 600,
+      "waitAfter": 1200,
+      "zoomLevel": 1.15,
+      "description": "Abrir a FAQ sobre Wellhub e TotalPass"
+    }
+  ],
+  "effects": {
+    "cameraFollow": false,
+    "zoomLevel": 1.15,
+    "clickAnimations": true,
+    "mouseMoveSpeed": 60,
+    "attentionPattern": false
+  },
+  "recording": {
+    "duration": 30000,
+    "skipErrors": false,
+    "outputName": "bradok-official-baseline"
+  },
+  "timings": {
+    "waitBeforeMove": 600,
+    "waitAfterClick": 900,
+    "waitBetweenSteps": 500,
+    "pageLoadWait": 1200
+  }
+}
