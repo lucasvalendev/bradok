@@ -1133,10 +1133,9 @@ function App() {
             </h2>
             <motion.div
               key={`hero-dot-${shouldRenderHeroTagline ? 'started' : 'idle'}`}
-              initial={{ y: '-80vh', backgroundColor: '#FFCC00' }}
+              initial={{ y: '-80vh' }}
               animate={{
                 y: ['-80vh', '0vh', '-20vh', '0vh', '-5vh', '0vh', '0vh'],
-                backgroundColor: ['#FFCC00', '#FFCC00', '#FFCC00', '#FFCC00', '#FFCC00', '#000000', '#000000']
               }}
               transition={{
                 delay: heroDotDelay,
@@ -1144,8 +1143,17 @@ function App() {
                 times: [0, 0.35, 0.65, 0.85, 0.93, 0.97, 1],
                 ease: ['easeIn', 'easeOut', 'easeIn', 'easeOut', 'easeIn', 'easeOut']
               }}
-              className="ml-2 h-3.5 w-3.5 rounded-full md:ml-[0.6vw] md:h-[0.81vw] md:w-[0.81vw]"
-            />
+              className="relative ml-2 h-3.5 w-3.5 md:ml-[0.6vw] md:h-[0.81vw] md:w-[0.81vw]"
+            >
+              <span
+                aria-hidden
+                className="absolute inset-0 rounded-full bg-[#FFCC00] mix-blend-screen"
+              />
+              <span
+                aria-hidden
+                className="absolute inset-0 rounded-full bg-black mix-blend-multiply"
+              />
+            </motion.div>
           </div>
           </div>
         )}
