@@ -13,6 +13,7 @@ const TRANSITION_START_FRAME = 147;
 const TRANSITION_DURATION_SECONDS = 2;
 const TRANSITION_FIXED_START_SECONDS = TRANSITION_START_FRAME / HERO_SOURCE_FRAME_RATE;
 const TRANSITION_ACTIVATION_LEAD_SECONDS = 0.06;
+const DESKTOP_MASK_RENDER_SIZE_CAP = 1280;
 
 const clamp = (value: number, min = 0, max = 1) => Math.min(Math.max(value, min), max);
 const easeOutCubic = (value: number) => 1 - Math.pow(1 - clamp(value), 3);
@@ -290,11 +291,15 @@ const HeroFusionMask = ({
       requestVideoFrameCallback?: (callback: (now: number, metadata: unknown) => void) => number;
       cancelVideoFrameCallback?: (handle: number) => void;
     };
+    const hasVideoFrameCallback = typeof trackedVideo.requestVideoFrameCallback === 'function';
 
     const context = canvas.getContext('2d');
     if (!context) return;
 
-    const logicalSize = metrics.maskCanvasSize;
+    const displaySize = metrics.maskCanvasSize;
+    const logicalSize = useLiteMask
+      ? displaySize
+      : Math.min(displaySize, DESKTOP_MASK_RENDER_SIZE_CAP);
     const dpr = 1;
     const pixelSize = Math.max(Math.round(logicalSize * dpr), 1);
     const matteCanvas = document.createElement('canvas');
@@ -310,8 +315,8 @@ const HeroFusionMask = ({
     if (canvas.width !== pixelSize || canvas.height !== pixelSize) {
       canvas.width = pixelSize;
       canvas.height = pixelSize;
-      canvas.style.width = `${logicalSize}px`;
-      canvas.style.height = `${logicalSize}px`;
+      canvas.style.width = `${displaySize}px`;
+      canvas.style.height = `${displaySize}px`;
     }
 
     let rafFrame = 0;
@@ -384,7 +389,7 @@ const HeroFusionMask = ({
     };
 
     const scheduleNextFrame = () => {
-      if (trackedVideo.requestVideoFrameCallback) {
+      if (hasVideoFrameCallback) {
         videoFrame = trackedVideo.requestVideoFrameCallback((now) => {
           videoFrame = 0;
           if (now - lastRenderTimestamp < frameIntervalMs && !video.ended) {
@@ -432,19 +437,23 @@ const HeroFusionMask = ({
 
     video.addEventListener('play', queueRender);
     video.addEventListener('pause', queueRender);
-    video.addEventListener('timeupdate', queueRender);
     video.addEventListener('seeking', queueRender);
     video.addEventListener('seeked', queueRender);
     video.addEventListener('ended', queueRender);
+    if (!hasVideoFrameCallback) {
+      video.addEventListener('timeupdate', queueRender);
+    }
 
     return () => {
       clearScheduledFrame();
       video.removeEventListener('play', queueRender);
       video.removeEventListener('pause', queueRender);
-      video.removeEventListener('timeupdate', queueRender);
       video.removeEventListener('seeking', queueRender);
       video.removeEventListener('seeked', queueRender);
       video.removeEventListener('ended', queueRender);
+      if (!hasVideoFrameCallback) {
+        video.removeEventListener('timeupdate', queueRender);
+      }
     };
   }, [
     activeDuration,
