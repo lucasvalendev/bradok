@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "build": "npm --prefix web run build",
     "web:dev": "npm --prefix web run dev -- --host 127.0.0.1",
     "demo:help": "demo-video --help",
     "demo:init": "cd web && demo-video --init",
