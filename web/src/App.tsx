@@ -790,7 +790,7 @@ function App() {
   const heroOpacity = useTransform(scrollY, [0, 800], [1, reducedMotionMode ? 0.92 : isPhoneViewport ? 0.58 : 0.3]);
   const heroBorderRadius = useTransform(scrollY, [0, 800], ['0rem', isPhoneViewport || isCompactViewport ? '1.5rem' : '4rem']);
   const heroWashOpacity = useTransform(scrollY, [0, 800], [0, reducedMotionMode ? 0.06 : isPhoneViewport ? 0.08 : 0.12]);
-  const heroSubtitleBottom = isCompactViewport ? '30.1svh' : isPhoneViewport ? '27svh' : '21.4svh';
+  const heroSubtitleBottom = isCompactViewport ? '30.1svh' : isPhoneViewport ? '33svh' : '21.4svh';
   const heroSectionStyle = shouldUseHeroParallax
     ? { scale: heroScale, opacity: heroOpacity, borderRadius: heroBorderRadius, willChange: 'transform, opacity, border-radius' as const }
     : { willChange: 'auto' as const };
