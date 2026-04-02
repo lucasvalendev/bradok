@@ -22,6 +22,7 @@ import setvilleUnidadeVideo from './assets/fotos/setvileUnidade.mp4';
 import tecnicasImage from './assets/fotos/tecnicas.jpg';
 import videoDroneBradok from './assets/fotos/videoDroneBradok.mp4';
 import HeroFusionMask from './components/HeroFusionMask';
+import HeroFusionBaked from './components/HeroFusionBaked';
 
 // --- RELATIVE GYMPASS REAL IMAGES ---
 const REAL_IMAGE_1 = "https://images.partners.gympass.com/image/partners/5b69fe1b-8427-4191-aaaa-fc979fbc8bb9/lg_b9be4298-e840-470e-81f2-ecb8c03e1dea_IMG20250226WA0005.jpg";
@@ -73,6 +74,10 @@ const isDemoRecordingSession = () => {
 const getDemoRecordingTake = () => {
   if (typeof window === 'undefined') return '';
   return new URLSearchParams(window.location.search).get('take') ?? '';
+};
+const getHeroBakeMode = () => {
+  if (typeof window === 'undefined') return '';
+  return new URLSearchParams(window.location.search).get('bake') ?? '';
 };
 
 const resetVideo = (video: HTMLVideoElement | null) => {
@@ -757,11 +762,13 @@ function App() {
   const { scrollY } = useScroll();
   const isDemoRecording = useMemo(isDemoRecordingSession, []);
   const demoRecordingTake = useMemo(getDemoRecordingTake, []);
+  const heroBakeMode = useMemo(getHeroBakeMode, []);
   const { width, height, isTouchDevice, isPhoneViewport, isCompactViewport, showDesktopNav, reducedMotionMode } = useViewportState();
   const shouldUseHeroVideo = true;
   const shouldSkipHeroCapture = isDemoRecording && demoRecordingTake !== '' && demoRecordingTake !== 'hero';
   const shouldUseHeroFusionMask = shouldUseHeroVideo && (!isDemoRecording || demoRecordingTake === 'hero');
   const shouldUseHeroFusionMaskLowPower = reducedMotionMode || isTouchDevice || isPhoneViewport || isCompactViewport;
+  const shouldUseHeroFusionBaked = shouldUseHeroFusionMask && !shouldUseHeroFusionMaskLowPower;
   const shouldUseHeroParallax = !reducedMotionMode && !isTouchDevice;
   const heroVideoPlaybackRate = isDemoRecording ? 1.45 : 1;
   const heroTaglineDelay = 6 / heroVideoPlaybackRate;
@@ -771,7 +778,7 @@ function App() {
   const [heroPlaybackTime, setHeroPlaybackTime] = useState(0);
   const [heroIntroStarted, setHeroIntroStarted] = useState(() => !shouldUseHeroVideo);
   const [heroIntroCompleted, setHeroIntroCompleted] = useState(() => !shouldUseHeroVideo);
-  const shouldRenderHeroTagline = heroIntroStarted && (!isDemoRecording || demoRecordingTake === 'hero');
+  const shouldRenderHeroTagline = heroBakeMode !== 'hero-fusion' && heroIntroStarted && (!isDemoRecording || demoRecordingTake === 'hero');
   const [activeTab, setActiveTab] = useState<'galo' | 'setville'>('galo');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const { ref: droneCardRef, isNearScreen: shouldLoadDroneVideo } = useNearScreen<HTMLDivElement>(!reducedMotionMode);
@@ -1079,7 +1086,14 @@ function App() {
           <motion.div className="pointer-events-none absolute inset-0 bg-[#FAFAFA]" style={{ opacity: heroWashOpacity }} />
         </motion.div>
 
-        {shouldUseHeroFusionMask && heroIntroStarted && (
+        {shouldUseHeroFusionBaked && heroIntroStarted && (
+          <HeroFusionBaked
+            videoRef={heroVideoRef}
+            videoDuration={videoDuration}
+          />
+        )}
+
+        {!shouldUseHeroFusionBaked && shouldUseHeroFusionMask && heroIntroStarted && (
           <HeroFusionMask
             videoRef={heroVideoRef}
             videoDuration={videoDuration}
