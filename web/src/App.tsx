@@ -757,7 +757,7 @@ function App() {
   const isDemoRecording = useMemo(isDemoRecordingSession, []);
   const demoRecordingTake = useMemo(getDemoRecordingTake, []);
   const { width, height, isTouchDevice, isPhoneViewport, isCompactViewport, showDesktopNav, reducedMotionMode } = useViewportState();
-  const shouldUseHeroVideo = !reducedMotionMode && !isTouchDevice;
+  const shouldUseHeroVideo = true;
   const shouldSkipHeroCapture = isDemoRecording && demoRecordingTake !== '' && demoRecordingTake !== 'hero';
   const shouldUseHeroFusionMask = shouldUseHeroVideo && !isPhoneViewport && !isCompactViewport && (!isDemoRecording || demoRecordingTake === 'hero');
   const shouldUseHeroParallax = !reducedMotionMode && !isTouchDevice;
