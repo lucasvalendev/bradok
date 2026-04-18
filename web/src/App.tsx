@@ -1135,13 +1135,18 @@ function App() {
               key={`hero-dot-${shouldRenderHeroTagline ? 'started' : 'idle'}`}
               initial={{ y: '-80vh' }}
               animate={{
-                y: ['-80vh', '0vh', '-20vh', '0vh', '-5vh', '0vh', '0vh'],
+                y: ['-80vh', '0vh', '-15vh', '-2vh', '0vh'],
               }}
               transition={{
                 delay: heroDotDelay,
-                duration: 1.8,
-                times: [0, 0.35, 0.65, 0.85, 0.93, 0.97, 1],
-                ease: ['easeIn', 'easeOut', 'easeIn', 'easeOut', 'easeIn', 'easeOut']
+                duration: 1.4,
+                times: [0, 0.42, 0.68, 0.88, 1],
+                ease: [
+                  [0.55, 0, 0.9, 0.3],
+                  [0.2, 0.8, 0.35, 1],
+                  [0.55, 0, 0.9, 0.4],
+                  [0.2, 0.9, 0.4, 1],
+                ],
               }}
               className="relative ml-2 h-3.5 w-3.5 md:ml-[0.6vw] md:h-[0.81vw] md:w-[0.81vw]"
             >

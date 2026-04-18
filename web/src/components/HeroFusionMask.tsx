@@ -304,7 +304,7 @@ const HeroFusionMask = ({
     const pixelSize = Math.max(Math.round(logicalSize * dpr), 1);
     const matteCanvas = document.createElement('canvas');
     const matteResolution = useLiteMask ? 80 : 112;
-    const frameIntervalMs = 1000 / (useLiteMask ? 24 : 30);
+    const frameIntervalMs = 1000 / (useLiteMask ? 24 : 60);
 
     matteCanvas.width = matteResolution;
     matteCanvas.height = matteResolution;

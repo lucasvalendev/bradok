@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(ffmpeg -version)",
+      "Bash(magick -version)",
+      "Bash(ffmpeg -y -i hero_poster.jpg -qscale:v 6 hero_poster_new.jpg)",
+      "Bash(rtk tsc *)",
+      "Bash(git checkout *)",
+      "Bash(git reset *)",
+      "Bash(git push *)",
+      "Bash(ffprobe -v error -show_entries stream=codec_name,width,height,r_frame_rate,bit_rate,duration -of default=noprint_wrappers=1 web/src/assets/hero_optimized.mp4)",
+      "Bash(ffmpeg -y -i hero_optimized.mp4 -vf scale=1280:720:flags=lanczos -c:v libx264 -preset slow -crf 20 -pix_fmt yuv420p -profile:v high -level 4.0 -movflags +faststart -an hero_720p.mp4)"
+    ]
+  }
+}
