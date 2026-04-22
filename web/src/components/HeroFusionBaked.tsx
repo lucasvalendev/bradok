@@ -63,7 +63,7 @@ const HeroFusionBaked = ({ videoRef, videoDuration }: HeroFusionBakedProps) => {
         if (bakedVideo.currentTime > 0.001) {
           bakedVideo.currentTime = 0;
         }
-        return false;
+        return !sourceVideo.paused && !sourceVideo.ended;
       }
 
       bakedVideo.style.opacity = '1';
@@ -126,9 +126,7 @@ const HeroFusionBaked = ({ videoRef, videoDuration }: HeroFusionBakedProps) => {
     sourceVideo.addEventListener('seeking', handleSeeking);
     sourceVideo.addEventListener('seeked', handleSeeked);
     sourceVideo.addEventListener('ended', handleEnded);
-    if (!hasVideoFrameCallback) {
-      sourceVideo.addEventListener('timeupdate', handleTimeUpdate);
-    }
+    sourceVideo.addEventListener('timeupdate', handleTimeUpdate);
 
     return () => {
       clearScheduledFrame();
@@ -139,9 +137,7 @@ const HeroFusionBaked = ({ videoRef, videoDuration }: HeroFusionBakedProps) => {
       sourceVideo.removeEventListener('seeking', handleSeeking);
       sourceVideo.removeEventListener('seeked', handleSeeked);
       sourceVideo.removeEventListener('ended', handleEnded);
-      if (!hasVideoFrameCallback) {
-        sourceVideo.removeEventListener('timeupdate', handleTimeUpdate);
-      }
+      sourceVideo.removeEventListener('timeupdate', handleTimeUpdate);
     };
   }, [videoDuration, videoRef]);
 
